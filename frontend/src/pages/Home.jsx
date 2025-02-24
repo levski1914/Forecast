@@ -14,21 +14,48 @@ const Home = () => {
   const [forecast, setForecast] = useState([]);
   const [favoriteCities, setFavoriteCities] = useState([]);
   const [showHourly, setShowHourly] = useState(false);
+
+  const getCityFromCoords = async (lat, lon) => {
+    try {
+      const res = await axios.get(
+        `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=YOUR_API_KEY`
+      );
+      if (res.data.length > 0) {
+        return res.data[0].name; // 🏙️ Връща правилното име на града
+      }
+      return "Unknown Location";
+    } catch (error) {
+      console.error("Reverse Geocoding Error:", error);
+      return "Unknown Location";
+    }
+  };
   useEffect(() => {
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude } = position.coords;
-        try {
-          const res = await axios.get(
-            `http://localhost:5000/api/weather/geo?lat=${latitude}&lon=${longitude}`
-          );
-          fetchWeather(res.data);
-        } catch (error) {
-          console.log("error fetching location : ", error);
-        }
-      });
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log("Geolocation coords:", latitude, longitude);
+
+          try {
+            const res = await axios.get(
+              `http://localhost:5000/api/weather/geo?lat=${latitude}&lon=${longitude}`
+            );
+
+            console.log("Detected city:", res.data.name); // 🏙️ Проверяваме името на града
+
+            fetchWeather({ name: res.data.name }); // Зареждаме времето за този град
+          } catch (error) {
+            console.log("Error fetching location:", error);
+          }
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
     }
   }, []);
+
   // Търсене на градове
   const fetchCities = async (input) => {
     if (input.length < 3) {

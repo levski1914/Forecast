@@ -1,4 +1,5 @@
 import {
+  fetchCityByCoords,
   fetchForecast,
   fetchWeeklyForecast,
   searchCity,
@@ -10,4 +11,6 @@ const router = express.Router();
 router.get("/:city", fetchForecast);
 router.get("/search/:city", searchCity);
 router.get("/forecast/:city", fetchWeeklyForecast);
+
+router.get("/geo", fetchCityByCoords);
 export default router;
