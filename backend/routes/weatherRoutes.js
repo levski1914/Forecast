@@ -8,9 +8,9 @@ import express from "express";
 
 const router = express.Router();
 
+router.get("/geo", fetchCityByCoords);
 router.get("/:city", fetchForecast);
 router.get("/search/:city", searchCity);
 router.get("/forecast/:city", fetchWeeklyForecast);
 
-router.get("/geo", fetchCityByCoords);
 export default router;

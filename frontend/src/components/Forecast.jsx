@@ -1,38 +1,58 @@
-const Forecast = ({ forecast, hourlyForecast, setShowHourly }) => {
+import { WiDaySunny, WiRain, WiCloudy, WiSnow } from "react-icons/wi";
+
+const Forecast = ({
+  forecast = [],
+  hourlyForecast = [],
+  setShowHourly,
+  showHourly,
+  setSelectedDay,
+}) => {
+  const getWeatherIcon = (description) => {
+    if (!description) return <WiDaySunny size={36} />;
+    const desc = description.toLowerCase();
+    if (desc.includes("rain"))
+      return <WiRain size={36} className="text-blue-500" />;
+    if (desc.includes("cloud"))
+      return <WiCloudy size={36} className="text-gray-500" />;
+    if (desc.includes("snow"))
+      return <WiSnow size={36} className="text-white" />;
+    return <WiDaySunny size={36} className="text-yellow-500" />;
+  };
+
   return (
-    <div className="p-6 bg-white text-black rounded-xl shadow-lg w-auto">
-      <div className="flex justify-between mb-2">
+    <div className="p-6 bg-white text-black rounded-xl shadow-lg w-80">
+      <div className="flex justify-between mb-3">
         <h3 className="text-xl font-bold">Прогноза</h3>
         <div>
           <button
-            className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2"
+            className={`px-3 py-1 rounded-md mr-2 ${
+              !showHourly ? "bg-blue-600 text-white" : "bg-gray-300 text-black"
+            }`}
             onClick={() => setShowHourly(false)}
           >
             5 дни
           </button>
-          <button
-            className="px-3 py-1 bg-blue-500 text-white rounded-md"
-            onClick={() => setShowHourly(true)}
-          >
-            По часове
-          </button>
         </div>
       </div>
 
-      <div className="flex gap-2">
+      {/* Прогноза за 5 дни */}
+
+      <div className="flex flex-col gap-1">
         {forecast.map((day, index) => (
           <div
             key={index}
-            className="flex flex-col items-center justify-between p-3 border-b border-gray-300"
+            className="flex  items-center justify-between p-3 border rounded-lg shadow-md w-70 bg-gray-100"
+            onClick={() => {
+              setSelectedDay(day.day); // 🟢 При клик, избира деня
+              setShowHourly(true); // 🟢 Автоматично превключва на почасова прогноза
+            }}
           >
-            <span className="w-1/4 text-center font-semibold">{day.day}</span>
-            <span className="text-2xl">
-              {day.weather.includes("rain") ? "🌧️" : "☀️"}
-            </span>
-            <span>
+            <span className="text-sm gap-1 flex align-middle items-center text-gray-700">
+              {getWeatherIcon(day.weather)}
               🌡️ {day.temp_min}° / {day.temp_max}°
             </span>
-            <span>💧 {day.rain_chance}%</span>
+            <span className="text-center font-semibold">{day.day}</span>
+            <span className="text-sm text-blue-500">💧 {day.rain_chance}%</span>
           </div>
         ))}
       </div>
