@@ -1,5 +1,6 @@
 import { WiDaySunny, WiRain, WiCloudy, WiSnow } from "react-icons/wi";
 import { useTranslation } from "react-i18next";
+import { CloudSun, CloudRain, CloudSnow, Sun } from "phosphor-react";
 const Forecast = ({
   forecast = [],
   hourlyForecast = [],
@@ -9,19 +10,16 @@ const Forecast = ({
 }) => {
   const { t } = useTranslation();
   const getWeatherIcon = (description) => {
-    if (!description) return <WiDaySunny size={36} />;
+    if (!description) return <Sun size={36} color="#FFD700" />;
     const desc = description.toLowerCase();
-    if (desc.includes("rain"))
-      return <WiRain size={36} className="text-blue-500" />;
-    if (desc.includes("cloud"))
-      return <WiCloudy size={36} className="text-gray-500" />;
-    if (desc.includes("snow"))
-      return <WiSnow size={36} className="text-white" />;
-    return <WiDaySunny size={36} className="text-yellow-500" />;
+    if (desc.includes("rain")) return <CloudRain size={36} color="#1E90FF" />;
+    if (desc.includes("cloud")) return <CloudSun size={36} color="#808080" />;
+    if (desc.includes("snow")) return <CloudSnow size={36} color="#B0E0E6" />;
+    return <Sun size={36} color="#FFD700" />;
   };
 
   return (
-    <div className="p-6 forecast   rounded-xl shadow-lg w-80">
+    <div className="p-6 forecast h-full   rounded-xl shadow-lg w-fit">
       <div className="flex justify-between mb-3">
         <h3 className="text-xl font-bold">{t("forecast")}</h3>
         <div>
@@ -38,17 +36,17 @@ const Forecast = ({
 
       {/* Прогноза за 5 дни */}
 
-      <div className="flex flex-col gap-1">
+      <div className="flex w-full  gap-1">
         {forecast.map((day, index) => (
           <div
             key={index}
-            className="flex  items-center text-blue-400 justify-between p-3 border rounded-lg shadow-md w-70 bg-gray-100"
+            className="flex flex-col items-center text-blue-400 justify-between p-3 border rounded-lg shadow-md w-fit bg-gray-100"
             onClick={() => {
               setSelectedDay(day.day); // 🟢 При клик, избира деня
               setShowHourly(true); // 🟢 Автоматично превключва на почасова прогноза
             }}
           >
-            <span className="text-sm gap-1 flex align-middle items-center text-gray-700">
+            <span className="text-sm gap-1 flex flex-col align-middle items-center text-gray-700">
               {getWeatherIcon(day.weather)}
               🌡️ {day.temp_min}° / {day.temp_max}°
             </span>

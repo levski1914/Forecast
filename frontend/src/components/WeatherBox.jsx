@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { CloudSun, CloudRain, CloudSnow, Sun } from "phosphor-react";
+
 const WeatherBox = ({ weather, addFavorite }) => {
   const [isCelsius, setIsCelsius] = useState(true);
   const { t } = useTranslation();
@@ -16,16 +18,16 @@ const WeatherBox = ({ weather, addFavorite }) => {
   const weatherCondition = weather.weather[0]?.main.toLowerCase();
 
   const getWeatherIcon = (description) => {
-    if (!description) return "☀️";
+    if (!description) return <Sun size={50} color="#FFD700" />;
     const desc = description.toLowerCase();
-    if (desc.includes("rain")) return "🌧️";
-    if (desc.includes("cloud")) return "☁️";
-    if (desc.includes("snow")) return "❄️";
-    return "☀️";
+    if (desc.includes("rain")) return <CloudRain size={50} color="#1E90FF" />;
+    if (desc.includes("cloud")) return <CloudSun size={50} color="#808080" />;
+    if (desc.includes("snow")) return <CloudSnow size={50} color="#B0E0E6" />;
+    return <Sun size={50} color="#FFD700" />;
   };
 
   return (
-    <div className="p-6 forecast  rounded-xl shadow-xl w-80 flex flex-col items-center">
+    <div className="p-6 forecast  rounded-xl shadow-xl w-full flex flex-col items-center">
       <h2 className="text-3xl font-bold mt-2">{weather.name}</h2>
       <span className="text-center font-semibold">{weather.day}</span>
       <span className="text-6xl flex justify-between">

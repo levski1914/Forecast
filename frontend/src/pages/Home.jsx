@@ -11,7 +11,7 @@ import { enUS } from "date-fns/locale"; //
 import WeatherMap from "../components/WeatherMap";
 import { useTranslation } from "react-i18next";
 // import LanguageSelector from "../components/LanguageSelector";
-
+import { CloudSun, CloudRain, CloudSnow, Sun } from "phosphor-react";
 const LanguageSelector = () => {
   const { i18n } = useTranslation();
 
@@ -206,14 +206,16 @@ const Home = () => {
     if (darkMode) {
       return "bg-gray-900 text-[#FF7300]";
     }
-    return "bg-blue-500 text-white";
+    return "bg-[#5EA1E7] text-white";
   };
   return (
     <div
-      className={`flex p-10 gap-4 flex-col items-start @container min-h-screen bg-["#3D6CAA"] transition-all duration-500 ${getBackgroundClass()}`}
+      className={`flex p-10 gap-4 flex-col items-start @container min-h-screen bg-["#02344E"] transition-all duration-500 ${getBackgroundClass()}`}
     >
       <div className="flex justify-between w-full items-center mb-4 gap-2">
-        <h1 className="text-4xl font-bold">SkyCast</h1>
+        <h1 className="text-4xl font-bold">
+          SkyCast {weather?.name && `- ${weather.name}`}
+        </h1>
         <div className="flex gap-2">
           <button
             className="px-4 py-2 rounded-lg text-white bg-gray-700 hover:bg-gray-600 transition"
@@ -233,10 +235,17 @@ const Home = () => {
           fetchWeather={fetchWeather}
         />
       </div>
-      <div className="flex flex-row shrink flex-wrap justify-center gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
         {weather && <WeatherBox weather={weather} addFavorite={addFavorite} />}
-        <div className=" w-140 ">
-          <WeatherMap darkMode={darkMode} weather={weather} />
+        <div className="col-span-2 h-full">
+          {forecast.length > 0 && (
+            <Forecast
+              forecast={forecast}
+              showHourly={showHourly}
+              setShowHourly={setShowHourly}
+              setSelectedDay={setSelectedDay}
+            />
+          )}
         </div>
         <div className="mt-0">
           <FavouriteCities
@@ -246,8 +255,8 @@ const Home = () => {
           />
         </div>
       </div>
-      <div className="flex w-full justify-between items-start gap-6">
-        {/* Прогнозата за 5 дни */}
+      {/* <div className="flex w-full justify-between items-start gap-6">
+    
         {forecast.length > 0 && (
           <Forecast
             forecast={forecast}
@@ -257,7 +266,7 @@ const Home = () => {
           />
         )}
 
-        {/* 📊 Графиката - фиксираме я в дясната част */}
+      
         {forecast.length > 0 && (
           <div className="ml-auto h-full w-full">
             <WeatherChart
@@ -267,6 +276,17 @@ const Home = () => {
               hourlyForecast={hourlyForecast}
             />
           </div>
+        )}
+      </div> */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full mt-4">
+        <WeatherMap darkMode={darkMode} weather={weather} />
+        {forecast.length > 0 && (
+          <WeatherChart
+            darkMode={darkMode}
+            forecast={forecast}
+            selectedDay={selectedDay}
+            hourlyForecast={hourlyForecast}
+          />
         )}
       </div>
     </div>

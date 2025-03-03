@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
 import { useTranslation } from "react-i18next";
+
 const WeatherChart = ({ forecast, hourlyForecast, selectedDay }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
@@ -154,7 +155,7 @@ const WeatherChart = ({ forecast, hourlyForecast, selectedDay }) => {
           </button>
         </div>
       </div>
-      <div ref={chartRef} style={{ width: "100%", height: "390px" }} />
+      <div ref={chartRef} style={{ width: "100%", height: "300px" }} />
     </div>
   );
 };
