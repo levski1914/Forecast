@@ -1,0 +1,15 @@
+{
+  "weather_app": "Прогноза за времето",
+  "search_placeholder": "Въведете град...",
+  "temperature": "Температура",
+  "humidity": "Влажност",
+  "wind_speed": "Скорост на вятъра",
+  "add_favorite": "Добави в любими",
+  "remove_favorite": "Премахни",
+  "forecast": "Прогноза",
+  "5_days": "5 дни",
+  "hourly": "Почасово",
+  "sunrise": "Изгрев",
+  "sunset": "Залез",
+  "change_language": "Смени езика"
+}

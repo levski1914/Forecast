@@ -3,7 +3,14 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-// 🟢 Оправяме маркера
+// 🟢 Твоят API ключ от MapTiler
+const mapTilerKey = "qPnzBxOqlXMEiIsi9DIP";
+
+// 🗺️ Слоеве за светъл и тъмен режим (ТОВА РАБОТИ)
+const lightTileLayer = `https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${mapTilerKey}`;
+const darkTileLayer = `https://api.maptiler.com/maps/toner-lite/{z}/{x}/{y}.png?key=${mapTilerKey}`;
+
+// 🟢 Оправен маркер
 const customIcon = new L.Icon({
   iconUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
@@ -15,15 +22,13 @@ const customIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-const WeatherMap = ({ weather }) => {
+const WeatherMap = ({ weather, darkMode }) => {
   const [position, setPosition] = useState([42.6975, 23.3242]); // София по подразбиране
-  const [cityName, setCityName] = useState("София");
 
   useEffect(() => {
     if (weather && weather.coord) {
       const { lat, lon } = weather.coord;
       setPosition([lat, lon]);
-      setCityName(weather.name);
     }
   }, [weather]);
 
@@ -31,29 +36,31 @@ const WeatherMap = ({ weather }) => {
     const map = useMap();
     useEffect(() => {
       if (position) {
-        map.setView(position, 8); // Центрираме картата към новата локация
+        map.setView(position, 12);
       }
     }, [position]);
     return null;
   }
 
+  if (!weather || !weather.coord) return null;
+  const { lat, lon } = weather.coord;
+
   return (
-    <div className="p-4 bg-white shadow-lg rounded-xl w-full">
-      <h3 className="text-lg font-semibold mb-2">🌍 Карта на времето</h3>
+    <div className="p-4 forecast shadow-lg rounded-xl w-full">
+      <h3 className="text-lg   font-semibold mb-2">🌍 Карта на времето</h3>
       <MapContainer
-        center={position}
-        zoom={8}
-        className="w-full h-96 rounded-lg"
+        center={[lat, lon]}
+        zoom={10}
+        className="h-64 w-full rounded-lg"
       >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <MapUpdater />
-        <Marker position={position} icon={customIcon}>
-          <Popup>
-            <strong>{cityName}</strong>
-            <br />
-            📍 Локация: {position[0].toFixed(2)}, {position[1].toFixed(2)}
-          </Popup>
+        <TileLayer
+          url={darkMode ? darkTileLayer : lightTileLayer}
+          attribution='&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        />
+        <Marker position={[lat, lon]} icon={customIcon}>
+          <Popup>{weather.name}</Popup>
         </Marker>
+        <MapUpdater />
       </MapContainer>
     </div>
   );

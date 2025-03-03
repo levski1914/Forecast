@@ -1,0 +1,15 @@
+{
+  "weather_app": "Weather Forecast",
+  "search_placeholder": "Enter city...",
+  "temperature": "Temperature",
+  "humidity": "Humidity",
+  "wind_speed": "Wind Speed",
+  "add_favorite": "Add to favorites",
+  "remove_favorite": "Remove",
+  "forecast": "Forecast",
+  "5_days": "5 Days",
+  "hourly": "Hourly",
+  "sunrise": "Sunrise",
+  "sunset": "Sunset",
+  "change_language": "Change Language"
+}

@@ -1,0 +1,15 @@
+{
+  "weather_app": "Pronóstico del tiempo",
+  "search_placeholder": "Ingrese ciudad...",
+  "temperature": "Temperatura",
+  "humidity": "Humedad",
+  "wind_speed": "Velocidad del viento",
+  "add_favorite": "Agregar a favoritos",
+  "remove_favorite": "Eliminar",
+  "forecast": "Pronóstico",
+  "5_days": "5 días",
+  "hourly": "Por hora",
+  "sunrise": "Amanecer",
+  "sunset": "Atardecer",
+  "change_language": "Cambiar idioma"
+}

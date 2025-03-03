@@ -62,9 +62,24 @@ export const searchCity = async (req, res) => {
     const city = req.params.city;
     const apiKEY = process.env.OPENWEATHER_API_KEY;
     const response = await axios.get(
-      `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKEY}`
+      `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=10&appid=${apiKEY}`
     );
-    res.json(response.data);
+
+    // Добавяме броя на населението и филтрираме дубликати
+    const uniqueCities = response.data.reduce((acc, city) => {
+      if (!acc.find((c) => c.name === city.name)) {
+        acc.push({
+          name: city.name,
+          country: city.country,
+          lat: city.lat,
+          lon: city.lon,
+          population: city.population || 0,
+        });
+      }
+      return acc;
+    }, []);
+
+    res.json(uniqueCities);
   } catch (error) {
     console.error("Error fetching city data:", error);
     res.status(500).json({ message: "Server error fetching city data" });
@@ -88,23 +103,24 @@ export const fetchWeeklyForecast = async (req, res) => {
       console.log("❌ No forecast data received");
       return res.status(500).json({ message: "No forecast data available" });
     }
-
     const hourlyData = response.data.list
       .filter(
         (entry) => entry.main && entry.weather && entry.weather.length > 0
       ) // Филтрира лоши записи
-      .map((entry) => ({
-        date: new Date(entry.dt * 1000).toISOString().split("T")[0], // YYYY-MM-DD
-        time: new Date(entry.dt * 1000).toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        temp: entry.main.temp.toFixed(1),
-        rain_chance: (entry.pop * 100).toFixed(0),
-        weather: entry.weather[0].main,
-        icon: `https://openweathermap.org/img/wn/${entry.weather[0].icon}@2x.png`,
-      }));
+      .map((entry) => {
+        const date = new Date(entry.dt * 1000);
+        const hours = date.getHours().toString().padStart(2, "0"); // 🟢 24-часов формат
+        const minutes = date.getMinutes().toString().padStart(2, "0");
 
+        return {
+          date: date.toISOString().split("T")[0], // YYYY-MM-DD
+          time: `${hours}:${minutes}`, // 🟢 Форматираме времето в 24ч
+          temp: entry.main.temp.toFixed(1),
+          rain_chance: (entry.pop * 100).toFixed(0),
+          weather: entry.weather[0].main,
+          icon: `https://openweathermap.org/img/wn/${entry.weather[0].icon}@2x.png`,
+        };
+      });
     res.json(hourlyData);
   } catch (error) {
     console.error(

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
-
+import { useTranslation } from "react-i18next";
 const WeatherChart = ({ forecast, hourlyForecast, selectedDay }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
   const [showHourly, setShowHourly] = useState(false);
-
+  const { t } = useTranslation();
   useEffect(() => {
     if (!chartRef.current || (!forecast?.length && !hourlyForecast?.length))
       return;
@@ -132,7 +132,7 @@ const WeatherChart = ({ forecast, hourlyForecast, selectedDay }) => {
   }, [forecast, hourlyForecast, showHourly, selectedDay]);
 
   return (
-    <div className="p-6 backdrop-blur-lg rounded-2xl shadow-lg w-full max-w-4xl text-white transition-all duration-500 bg-gradient-to-br from-blue-800 to-blue-500">
+    <div className="p-6 backdrop-blur-lg rounded-2xl shadow-lg w-full  forecast transition-all duration-200 forecast">
       <div className="flex justify-between mb-4">
         <h3 className="text-xl font-bold">📊 Графика на прогнозата</h3>
         <div className="flex gap-2">
@@ -142,7 +142,7 @@ const WeatherChart = ({ forecast, hourlyForecast, selectedDay }) => {
             }`}
             onClick={() => setShowHourly(false)}
           >
-            5 дни
+            {t("fiveDays")}
           </button>
           <button
             className={`px-3 py-1 rounded-md font-semibold transition ${
@@ -150,7 +150,7 @@ const WeatherChart = ({ forecast, hourlyForecast, selectedDay }) => {
             }`}
             onClick={() => setShowHourly(true)}
           >
-            Почасово
+            {t("hourly")}
           </button>
         </div>
       </div>

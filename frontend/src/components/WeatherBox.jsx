@@ -1,8 +1,8 @@
 import { useState } from "react";
-
+import { useTranslation } from "react-i18next";
 const WeatherBox = ({ weather, addFavorite }) => {
   const [isCelsius, setIsCelsius] = useState(true);
-
+  const { t } = useTranslation();
   // Ако weather не е зареден, показваме "Зареждане..."
   if (!weather || !weather.main || !weather.weather || !weather.wind) {
     return (
@@ -25,7 +25,7 @@ const WeatherBox = ({ weather, addFavorite }) => {
   };
 
   return (
-    <div className="p-6 bg-gradient-to-br from-blue-500 gap-y-1 to-blue-700 text-white rounded-xl shadow-xl w-80 flex flex-col items-center">
+    <div className="p-6 forecast  rounded-xl shadow-xl w-80 flex flex-col items-center">
       <h2 className="text-3xl font-bold mt-2">{weather.name}</h2>
       <span className="text-center font-semibold">{weather.day}</span>
       <span className="text-6xl flex justify-between">
@@ -53,7 +53,7 @@ const WeatherBox = ({ weather, addFavorite }) => {
         onClick={() => addFavorite(weather)}
         className="mt-3 ml-4 cursor-pointer px-4 py-2 bg-yellow-500 text-white font-bold rounded-lg shadow-md hover:bg-yellow-600"
       >
-        ⭐ Добави в любими
+        ⭐ {t("addFavorite")}
       </button>
     </div>
   );

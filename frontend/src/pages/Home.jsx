@@ -9,6 +9,30 @@ import WeatherChart from "../components/WeatherChart";
 import { format, parseISO } from "date-fns";
 import { enUS } from "date-fns/locale"; //
 import WeatherMap from "../components/WeatherMap";
+import { useTranslation } from "react-i18next";
+// import LanguageSelector from "../components/LanguageSelector";
+
+const LanguageSelector = () => {
+  const { i18n } = useTranslation();
+
+  const handleLanguageChange = (e) => {
+    i18n.changeLanguage(e.target.value);
+  };
+
+  return (
+    <div className="mt-4">
+      <select
+        onChange={handleLanguageChange}
+        value={i18n.language}
+        className="px-3 py-2 bg-gray-700 text-white rounded cursor-pointer"
+      >
+        <option value="bg">🇧🇬 </option>
+        <option value="en">🇬🇧 </option>
+        <option value="es">🇪🇸 </option>
+      </select>
+    </div>
+  );
+};
 const Home = () => {
   const [isCelsius, setIsCelsius] = useState(true);
   const [query, setQuery] = useState("");
@@ -17,12 +41,24 @@ const Home = () => {
   const [forecast, setForecast] = useState([]);
   const [hourlyForecast, setHourlyForecast] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
-
+  const { t } = useTranslation();
   const [favoriteCities, setFavoriteCities] = useState(() => {
     return JSON.parse(localStorage.getItem("favorites")) || [];
   });
   const [showHourly, setShowHourly] = useState(false);
 
+  const [darkMode, setDarkMode] = useState(() => {
+    return JSON.parse(localStorage.getItem("darkmode")) || false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
+
+  // Функция за превключване на тъмен/светъл режим
+  const toggleDarkMode = () => {
+    setDarkMode((prev) => !prev);
+  };
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -61,12 +97,17 @@ const Home = () => {
       const res = await axios.get(
         `http://localhost:5000/api/weather/search/${input}`
       );
-      setSuggestions(res.data);
+
+      // Сортираме по популярност (ако има такава метрика)
+      const sortedCities = res.data.sort((a, b) =>
+        a.population > b.population ? -1 : 1
+      );
+
+      setSuggestions(sortedCities);
     } catch (err) {
       console.error("Error fetching cities:", err);
     }
   };
-
   // Зареждане на прогноза за избран град
   const fetchWeather = async (city) => {
     if (!city || !city.name || city.name === "Unknown Location") {
@@ -82,8 +123,6 @@ const Home = () => {
       const forecastRes = await axios.get(
         `http://localhost:5000/api/weather/forecast/${city.name}`
       );
-
-      console.log("📊 Forecast API Response:", forecastRes.data);
 
       if (!forecastRes.data || !forecastRes.data.length) {
         console.error(
@@ -164,30 +203,28 @@ const Home = () => {
   }, [query, debouncedSearch]);
 
   const getBackgroundClass = () => {
-    if (!weather || !weather.weather || weather.weather.length === 0) {
-      return "bg-gradient-to-br from-blue-500 to-purple-700"; // Default background
+    if (darkMode) {
+      return "bg-gray-900 text-[#FF7300]";
     }
-
-    const condition = weather.weather[0].main.toLowerCase();
-
-    return (
-      {
-        clear: "bg-gradient-to-br from-yellow-300 to-orange-500",
-        clouds: "bg-gradient-to-br from-gray-400 to-gray-600",
-        rain: "bg-gradient-to-br from-blue-600 to-blue-900",
-        snow: "bg-gradient-to-br from-blue-200 to-blue-500",
-        thunderstorm: "bg-gradient-to-br from-purple-700 to-purple-900",
-        drizzle: "bg-gradient-to-br from-blue-400 to-blue-600",
-        mist: "bg-gradient-to-br from-gray-200 to-gray-400",
-        fog: "bg-gradient-to-br from-gray-300 to-gray-500",
-      }[condition] || "bg-gradient-to-br from-blue-500 to-purple-700"
-    );
+    return "bg-blue-500 text-white";
   };
-
   return (
     <div
-      className={`flex p-10 gap-4 flex-col items-start @container min-h-screen transition-all duration-500 ${getBackgroundClass()}`}
+      className={`flex p-10 gap-4 flex-col items-start @container min-h-screen bg-["#3D6CAA"] transition-all duration-500 ${getBackgroundClass()}`}
     >
+      <div className="flex justify-between w-full items-center mb-4 gap-2">
+        <h1 className="text-4xl font-bold">SkyCast</h1>
+        <div className="flex gap-2">
+          <button
+            className="px-4 py-2 rounded-lg text-white bg-gray-700 hover:bg-gray-600 transition"
+            onClick={toggleDarkMode}
+          >
+            {darkMode ? "☀" : "🌙 "}
+          </button>
+          <LanguageSelector />
+        </div>
+      </div>
+
       <div className="flex flex-row shrink flex-wrap items-start justify-center">
         <SearchBox
           query={query}
@@ -198,8 +235,8 @@ const Home = () => {
       </div>
       <div className="flex flex-row shrink flex-wrap justify-center gap-6">
         {weather && <WeatherBox weather={weather} addFavorite={addFavorite} />}
-        <div className=" w-150">
-          <WeatherMap weather={weather} />
+        <div className=" w-140 ">
+          <WeatherMap darkMode={darkMode} weather={weather} />
         </div>
         <div className="mt-0">
           <FavouriteCities
@@ -224,6 +261,7 @@ const Home = () => {
         {forecast.length > 0 && (
           <div className="ml-auto h-full w-full">
             <WeatherChart
+              darkMode={darkMode}
               forecast={forecast}
               selectedDay={selectedDay}
               hourlyForecast={hourlyForecast}

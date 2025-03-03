@@ -1,5 +1,5 @@
 import { WiDaySunny, WiRain, WiCloudy, WiSnow } from "react-icons/wi";
-
+import { useTranslation } from "react-i18next";
 const Forecast = ({
   forecast = [],
   hourlyForecast = [],
@@ -7,6 +7,7 @@ const Forecast = ({
   showHourly,
   setSelectedDay,
 }) => {
+  const { t } = useTranslation();
   const getWeatherIcon = (description) => {
     if (!description) return <WiDaySunny size={36} />;
     const desc = description.toLowerCase();
@@ -20,9 +21,9 @@ const Forecast = ({
   };
 
   return (
-    <div className="p-6 bg-white text-black rounded-xl shadow-lg w-80">
+    <div className="p-6 forecast   rounded-xl shadow-lg w-80">
       <div className="flex justify-between mb-3">
-        <h3 className="text-xl font-bold">Прогноза</h3>
+        <h3 className="text-xl font-bold">{t("forecast")}</h3>
         <div>
           <button
             className={`px-3 py-1 rounded-md mr-2 ${
@@ -41,7 +42,7 @@ const Forecast = ({
         {forecast.map((day, index) => (
           <div
             key={index}
-            className="flex  items-center justify-between p-3 border rounded-lg shadow-md w-70 bg-gray-100"
+            className="flex  items-center text-blue-400 justify-between p-3 border rounded-lg shadow-md w-70 bg-gray-100"
             onClick={() => {
               setSelectedDay(day.day); // 🟢 При клик, избира деня
               setShowHourly(true); // 🟢 Автоматично превключва на почасова прогноза
