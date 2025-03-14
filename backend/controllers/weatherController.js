@@ -1,6 +1,6 @@
-import axios from "axios";
-import dotenv from "dotenv";
-import { setCache, getCache } from "../utils/cache.js";
+const axios = require("axios");
+const dotenv = require("dotenv");
+const { setCache, getCache } = require("../utils/cache.js");
 dotenv.config();
 
 export const fetchCityByCoords = async (req, res) => {
