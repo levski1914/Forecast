@@ -12,6 +12,7 @@ import WeatherMap from "../components/WeatherMap";
 import { useTranslation } from "react-i18next";
 // import LanguageSelector from "../components/LanguageSelector";
 import { CloudSun, CloudRain, CloudSnow, Sun } from "phosphor-react";
+import { BACKEND_URL } from "../services/APIservices";
 const LanguageSelector = () => {
   const { i18n } = useTranslation();
 
@@ -67,7 +68,7 @@ const Home = () => {
 
           try {
             const res = await axios.get(
-              `http://localhost:5000/api/weather/geo?lat=${latitude}&lon=${longitude}`
+              `${BACKEND_URL}/api/weather/geo?lat=${latitude}&lon=${longitude}`
             );
 
             const detectedCity = res.data.name || "Unknown City";
@@ -94,9 +95,7 @@ const Home = () => {
       return;
     }
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/weather/search/${input}`
-      );
+      const res = await axios.get(`${BACKEND_URL}/api/weather/search/${input}`);
 
       // Сортираме по популярност (ако има такава метрика)
       const sortedCities = res.data.sort((a, b) =>
@@ -118,10 +117,10 @@ const Home = () => {
     setSuggestions([]);
     try {
       const weatherRes = await axios.get(
-        `http://localhost:5000/api/weather/${city.name}`
+        `${BACKEND_URL}/api/weather/${city.name}`
       );
       const forecastRes = await axios.get(
-        `http://localhost:5000/api/weather/forecast/${city.name}`
+        `${BACKEND_URL}/api/weather/forecast/${city.name}`
       );
 
       if (!forecastRes.data || !forecastRes.data.length) {
