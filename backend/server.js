@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
   res.send("Hello from backend");
 });
 mongoose
-  .connect(process.env.MONGO_URi)
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("DB is live");
     app.listen(PORT, () =>
