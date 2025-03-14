@@ -6,7 +6,6 @@ const {
   getCity,
 } = require("../controllers/UserController.js");
 const authMiddleware = require("../middleware/authMiddleware.js");
-// const {login} from "../controllers/UserController";
 
 const router = express.Router();
 
