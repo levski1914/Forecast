@@ -1,10 +1,10 @@
-const {
+import {
   fetchCityByCoords,
   fetchForecast,
   fetchWeeklyForecast,
   searchCity,
-} = require("../controllers/weatherController.js");
-const express = require("express");
+} from "../controllers/weatherController.js";
+import express from "express";
 
 const router = express.Router();
 
