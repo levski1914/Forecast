@@ -12,7 +12,7 @@ const FavouriteCities = ({
     localStorage.setItem("favorites", JSON.stringify(updatedFavorite));
   };
   return (
-    <div className=" p-4 forecast rounded-lg shadow-md w-70 h-full">
+    <div className=" p-4 forecast rounded-lg shadow-md  h-full">
       <h3 className="text-lg font-semibold mb-2">⭐ Любими градове</h3>
       {favoriteCities.length > 0 ? (
         <ul>

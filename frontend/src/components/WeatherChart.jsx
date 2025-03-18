@@ -133,7 +133,7 @@ const WeatherChart = ({ forecast, hourlyForecast, selectedDay }) => {
   }, [forecast, hourlyForecast, showHourly, selectedDay]);
 
   return (
-    <div className="p-6 backdrop-blur-lg rounded-2xl shadow-lg w-full  forecast transition-all duration-200 forecast">
+    <div className="p-6 backdrop-blur-lg rounded-2xl shadow-lg w-fit  forecast transition-all duration-200 forecast">
       <div className="flex justify-between mb-4">
         <h3 className="text-xl font-bold">📊 {t("graph_forecast")}</h3>
         <div className="flex gap-2">
@@ -155,7 +155,7 @@ const WeatherChart = ({ forecast, hourlyForecast, selectedDay }) => {
           </button>
         </div>
       </div>
-      <div ref={chartRef} style={{ width: "100%", height: "300px" }} />
+      <div ref={chartRef} style={{ width: "99%", height: "300px" }} />
     </div>
   );
 };

@@ -211,7 +211,7 @@ const Home = () => {
     <div
       className={`flex p-10 gap-4 flex-col items-start @container min-h-screen bg-["#02344E"] transition-all duration-500 ${getBackgroundClass()}`}
     >
-      <div className="flex justify-between w-full items-center mb-4 gap-2">
+      <div className="flex  justify-between w-full items-center mb-4 gap-2">
         <h1 className="text-4xl font-bold">
           SkyCast {weather?.name && `- ${weather.name}`}
         </h1>
@@ -234,9 +234,12 @@ const Home = () => {
           fetchWeather={fetchWeather}
         />
       </div>
-      <div className="flex flex-cols-1 md:flex-cols-2 lg:flex-cols-4 gap-4 h-full w-full">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 h-full w-full">
+        {/* Текущо време */}
         {weather && <WeatherBox weather={weather} addFavorite={addFavorite} />}
-        <div className="col-span-1 w-full ">
+
+        {/* Прогноза - заема 2 колони в lg и md, но на малки екрани се мести долу */}
+        <div className="md:col-span-3 lg:col-span-2 md:order-3 lg:order-2 order-3">
           {forecast.length > 0 && (
             <Forecast
               forecast={forecast}
@@ -246,7 +249,9 @@ const Home = () => {
             />
           )}
         </div>
-        <div className="mt-0">
+
+        {/* Любими градове - на големи екрани отива вдясно, на малки е отдолу */}
+        <div className="md:order-2 lg:order-3 order-3">
           <FavouriteCities
             favoriteCities={favoriteCities}
             setFavoriteCities={setFavoriteCities}
