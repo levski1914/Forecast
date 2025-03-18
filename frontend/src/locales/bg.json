@@ -11,5 +11,7 @@
   "hourly": "Почасово",
   "sunrise": "Изгрев",
   "sunset": "Залез",
-  "change_language": "Смени езика"
+  "change_language": "Смени езика",
+  "map_weather": "Карта на времето",
+  "graph_forecast": "Графика на прогнозата"
 }

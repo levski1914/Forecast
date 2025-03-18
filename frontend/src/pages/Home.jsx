@@ -234,9 +234,9 @@ const Home = () => {
           fetchWeather={fetchWeather}
         />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+      <div className="flex flex-cols-1 md:flex-cols-2 lg:flex-cols-4 gap-4 h-full w-full">
         {weather && <WeatherBox weather={weather} addFavorite={addFavorite} />}
-        <div className="col-span-2 h-full">
+        <div className="col-span-1 w-full ">
           {forecast.length > 0 && (
             <Forecast
               forecast={forecast}

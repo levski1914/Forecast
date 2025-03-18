@@ -135,7 +135,7 @@ const WeatherChart = ({ forecast, hourlyForecast, selectedDay }) => {
   return (
     <div className="p-6 backdrop-blur-lg rounded-2xl shadow-lg w-full  forecast transition-all duration-200 forecast">
       <div className="flex justify-between mb-4">
-        <h3 className="text-xl font-bold">📊 Графика на прогнозата</h3>
+        <h3 className="text-xl font-bold">📊 {t("graph_forecast")}</h3>
         <div className="flex gap-2">
           <button
             className={`px-3 py-1 rounded-md font-semibold transition ${

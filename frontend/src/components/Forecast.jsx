@@ -19,7 +19,7 @@ const Forecast = ({
   };
 
   return (
-    <div className="p-6 forecast h-full   rounded-xl shadow-lg w-fit">
+    <div className="p-3 forecast h-full   rounded-xl shadow-lg w-full">
       <div className="flex justify-between mb-3">
         <h3 className="text-xl font-bold">{t("forecast")}</h3>
         <div>
@@ -36,11 +36,11 @@ const Forecast = ({
 
       {/* Прогноза за 5 дни */}
 
-      <div className="flex w-full  gap-1">
+      <div className="flex w-full   gap-1">
         {forecast.map((day, index) => (
           <div
             key={index}
-            className="flex flex-col items-center text-blue-400 justify-between p-3 border rounded-lg shadow-md w-fit bg-gray-100"
+            className="flex flex-col items-center text-blue-400 justify-between p-3 border rounded-lg shadow-md w-full bg-gray-100"
             onClick={() => {
               setSelectedDay(day.day); // 🟢 При клик, избира деня
               setShowHourly(true); // 🟢 Автоматично превключва на почасова прогноза

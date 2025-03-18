@@ -11,5 +11,7 @@
   "hourly": "Hourly",
   "sunrise": "Sunrise",
   "sunset": "Sunset",
-  "change_language": "Change Language"
+  "change_language": "Change Language",
+  "map_weather": "Weather map",
+  "graph_forecast": "Forecast graph"
 }

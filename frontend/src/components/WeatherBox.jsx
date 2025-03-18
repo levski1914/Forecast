@@ -27,7 +27,7 @@ const WeatherBox = ({ weather, addFavorite }) => {
   };
 
   return (
-    <div className="p-6 forecast  rounded-xl shadow-xl w-full flex flex-col items-center">
+    <div className="p-6 forecast  rounded-xl shadow-xl w-100 flex flex-col items-center">
       <h2 className="text-3xl font-bold mt-2">{weather.name}</h2>
       <span className="text-center font-semibold">{weather.day}</span>
       <span className="text-6xl flex justify-between">

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { useTranslation } from "react-i18next";
 
 // 🟢 Твоят API ключ от MapTiler
 const mapTilerKey = "qPnzBxOqlXMEiIsi9DIP";
@@ -24,7 +25,7 @@ const customIcon = new L.Icon({
 
 const WeatherMap = ({ weather, darkMode }) => {
   const [position, setPosition] = useState([42.6975, 23.3242]); // София по подразбиране
-
+  const { t } = useTranslation();
   useEffect(() => {
     if (weather && weather.coord) {
       const { lat, lon } = weather.coord;
@@ -47,7 +48,7 @@ const WeatherMap = ({ weather, darkMode }) => {
 
   return (
     <div className="p-4 forecast shadow-lg rounded-xl w-full">
-      <h3 className="text-lg   font-semibold mb-2">🌍 Карта на времето</h3>
+      <h3 className="text-lg   font-semibold mb-2">🌍 {t("map_weather")}</h3>
       <MapContainer
         center={[lat, lon]}
         zoom={10}

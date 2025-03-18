@@ -13,6 +13,8 @@ const resources = {
       removeFavorite: "Remove",
       fiveDays: "5 Days",
       hourly: "Hourly",
+      map_weather: "Weather map",
+      graph_forecast: "Forecast graph",
     },
   },
   bg: {
@@ -24,6 +26,8 @@ const resources = {
       removeFavorite: "Премахни",
       fiveDays: "5 дни",
       hourly: "Почасово",
+      map_weather: "Карта на времето",
+      graph_forecast: "Графика на прогнозата",
     },
   },
   es: {
@@ -35,6 +39,8 @@ const resources = {
       removeFavorite: "Eliminar",
       fiveDays: "5 días",
       hourly: "Por hora",
+      map_weather: "Mapa del tiempo",
+      graph_forecast: "Gráfico de pronóstico",
     },
   },
 };
